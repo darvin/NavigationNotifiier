@@ -11,6 +11,9 @@ If client connected right now, app also indicates "Connected to Client (CLIENT N
 If client paired but not connected right now, app indicates "Expecting connection from (CLIENT NAME)"
 
 # Client app
+
+_During investigation I've learned that it's impossible to subscribe to ANCS service from iOS app, therefor Client app is gonna be Mac app. I will leave iOS client as legacy, with only pairing/connection functionality left_
+
 App shows view separated in 2 parts:
 
 ## Connection
@@ -28,5 +31,5 @@ Once connected, Client becomes paired to this Server, "Unpair" button appears, a
 Server app exposes read only BLE characteristic "SERVER NAME" which is equal to its own unique randomly generated persistive between launches name.
 Server app exposes read write BLE characteristic "PAIRED CLIENT NAME", set to "UNPAIRED" at initial launch. That is indication to Client app that Server app is ready to accept connection. Once connected, Client suppose to write to this characteristic its own name (randomly generated, device unique and persisting) and to remember SERVER NAME for reconnection.
 If client does not have previously remembered SERVER NAME, it suppose to connect only to those Servers who have "PAIRED CLIENT NAME" set to either "UNPAIRED" or to client name equal to Client's own client name. If it does have remembered SERVER NAME, server name of server should be equal to it. If it is equal, but PAIRED CLIENT NAME of server is different or UNPAIRED, client suppose to forget this server.
-Client only performs discovery 30 seconds after "discover" button is pressed or once first Server is discovered. If during the connection Server's "PAIRED CLIENT NAME" characteristic becomes "UNPAIRED", client suppose to drop connection.
+Client performs discovery until first Server is discovered. If during the connection Server's "PAIRED CLIENT NAME" characteristic becomes "UNPAIRED", client suppose to drop connection and unpair.
 Such complexity is nessecary to ensure one-to-one connection between Server and Client, and because Bluetooth device ids of iOS are unreliable - they are changing every reboot of device.
