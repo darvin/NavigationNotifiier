@@ -86,9 +86,9 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 
 - (CBCharacteristic *)pairedClientNameCharacteristicForPeripheral:(CBPeripheral *)peripheral {
     for (CBService *service in peripheral.services) {
-        if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
+        if ([service.UUID isEqual:NN_NN_SERVICE_UUID]) {
             for (CBCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+                if ([characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
                     return characteristic;
                 }
             }
@@ -122,9 +122,9 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 
 - (void) subscribeANCS:(CBPeripheral *) peripheral {
     for (CBService *service in peripheral.services) {
-        if ([service.UUID isEqual:IND_ANCS_SV_UUID]) {
+        if ([service.UUID isEqual:NN_ANCS_SERVICE_UUID]) {
             for (CBCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.UUID isEqual:IND_ANCS_NS_UUID]||[characteristic.UUID isEqual:IND_ANCS_DS_UUID]) {
+                if ([characteristic.UUID isEqual:NN_ANCS_CHAR_NOTIFICATION_SOURCE_UUID]||[characteristic.UUID isEqual:NN_ANCS_CHAR_DATA_SOURCE_UUID]) {
                     [peripheral setNotifyValue:YES forCharacteristic:characteristic];
                 }
             }
@@ -186,9 +186,9 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
     if (central.state==CBCentralManagerStatePoweredOn) {
         if (_state==NNCentralManagerStateDiscovery) {
-            [central scanForPeripheralsWithServices:@[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID] options:@{
+            [central scanForPeripheralsWithServices:@[NN_NN_SERVICE_UUID, NN_ANCS_SERVICE_UUID] options:@{
                                                                   CBCentralManagerScanOptionSolicitedServiceUUIDsKey:
-                                                                                         @[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID],
+                                                                                         @[NN_NN_SERVICE_UUID, NN_ANCS_SERVICE_UUID],
                                                                   CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
         }
     } else {
@@ -217,7 +217,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     NSLog(@"Connected to %@", peripheral);
     if (_state==NNCentralManagerStateDiscovery) {
-        [peripheral discoverServices:@[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID]];
+        [peripheral discoverServices:@[NN_NN_SERVICE_UUID, NN_ANCS_SERVICE_UUID]];
     }
     
 }
@@ -259,12 +259,12 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
     if (_state==NNCentralManagerStateDiscovery) {
         for (CBService *service in peripheral.services) {
-            if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
+            if ([service.UUID isEqual:NN_NN_SERVICE_UUID]) {
                 NSLog(@"Discovered NavNotify service");
-                [peripheral discoverCharacteristics:@[IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID, IND_NN_SERVER_NAME_CHAR_UUID] forService:service];
-            } else if ([service.UUID isEqual:IND_ANCS_SV_UUID]) {
+                [peripheral discoverCharacteristics:@[NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID, NN_NN_CHAR_SERVER_NAME_UUID] forService:service];
+            } else if ([service.UUID isEqual:NN_ANCS_SERVICE_UUID]) {
                 NSLog(@"Discovered Apple Notification Center service");
-                [peripheral discoverCharacteristics:@[IND_ANCS_CP_UUID, IND_ANCS_DS_UUID, IND_ANCS_NS_UUID] forService:service];
+                [peripheral discoverCharacteristics:@[NN_ANCS_CHAR_CONTROL_POINT_UUID, NN_ANCS_CHAR_DATA_SOURCE_UUID, NN_ANCS_CHAR_NOTIFICATION_SOURCE_UUID] forService:service];
 
             }
         }
@@ -284,7 +284,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
     if (_state==NNCentralManagerStateDiscovery) {
         for (CBCharacteristic *characteristic in service.characteristics) {
-            if ([characteristic.UUID isEqual:IND_NN_SERVER_NAME_CHAR_UUID]||[characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+            if ([characteristic.UUID isEqual:NN_NN_CHAR_SERVER_NAME_UUID]||[characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
                 [peripheral readValueForCharacteristic:characteristic];
             }
         }
@@ -297,18 +297,18 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
         return;
     }
     if (_state==NNCentralManagerStateDiscovery) {
-        if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+        if ([characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
             [self discoveryPairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] forPeripheral:peripheral];
-        } else  if ([characteristic.UUID isEqual:IND_NN_SERVER_NAME_CHAR_UUID]) {
+        } else  if ([characteristic.UUID isEqual:NN_NN_CHAR_SERVER_NAME_UUID]) {
             [self discoveryServerNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] forPeripheral:peripheral];
         }
 
     } else if (_state==NNCentralManagerStateConnection) {
-        if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+        if ([characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
             [self connectionPairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding]];
-        } else if ([characteristic.UUID isEqual:IND_ANCS_NS_UUID]) {
+        } else if ([characteristic.UUID isEqual:NN_ANCS_CHAR_NOTIFICATION_SOURCE_UUID]) {
             NSLog(@"ANCS Notification Received!");
-        } else if ([characteristic.UUID isEqual:IND_ANCS_DS_UUID]) {
+        } else if ([characteristic.UUID isEqual:NN_ANCS_CHAR_DATA_SOURCE_UUID]) {
             NSLog(@"ANCS Data Source Received!");
         }
 

@@ -65,7 +65,7 @@
 {
     if (_manager.state == CBCentralManagerStatePoweredOn && !_manager.isAdvertising) {
 
-        NSDictionary *advertisementData = @{CBAdvertisementDataServiceUUIDsKey : @[IND_ANCS_SV_UUID, IND_NN_SERVICE_UUID], CBAdvertisementDataLocalNameKey : UIDevice.currentDevice.name};
+        NSDictionary *advertisementData = @{CBAdvertisementDataServiceUUIDsKey : @[NN_ANCS_SERVICE_UUID, NN_NN_SERVICE_UUID], CBAdvertisementDataLocalNameKey : UIDevice.currentDevice.name};
         [_manager startAdvertising:advertisementData];
     }
 }
@@ -81,7 +81,7 @@
 
 -(CBMutableCharacteristic *)pairedClientCharacteristic {
     for (CBMutableCharacteristic *characteristic in _service.characteristics) {
-        if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+        if ([characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
             return characteristic;
         }
     }
@@ -114,10 +114,10 @@
 
 
 - (CBMutableService *)createService {
-    CBMutableService *service = [[CBMutableService alloc] initWithType:IND_NN_SERVICE_UUID primary:YES];
+    CBMutableService *service = [[CBMutableService alloc] initWithType:NN_NN_SERVICE_UUID primary:YES];
     
-    CBMutableCharacteristic *pairedClientName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead|CBCharacteristicPropertyWrite|CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
-    CBMutableCharacteristic *serverName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_SERVER_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
+    CBMutableCharacteristic *pairedClientName = [[CBMutableCharacteristic alloc] initWithType:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID properties:CBCharacteristicPropertyRead|CBCharacteristicPropertyWrite|CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
+    CBMutableCharacteristic *serverName = [[CBMutableCharacteristic alloc] initWithType:NN_NN_CHAR_SERVER_NAME_UUID properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
 
     service.characteristics = @[pairedClientName, serverName];
     return service;
@@ -166,10 +166,10 @@
         return;
     }
     
-    if ([request.characteristic.UUID isEqual:IND_NN_SERVER_NAME_CHAR_UUID]) {
+    if ([request.characteristic.UUID isEqual:NN_NN_CHAR_SERVER_NAME_UUID]) {
         request.value = [self serverNameData];
         [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
-    } else if ([request.characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+    } else if ([request.characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
         request.value = [self pairedClientNameData];
         [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
 
@@ -178,7 +178,7 @@
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests {
     for (CBATTRequest* request in requests) {
-        if ([request.characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+        if ([request.characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
             NSString *remoteName = [[NSString alloc] initWithData:request.value encoding:NSUTF8StringEncoding];
             if ([remoteName isEqualToString:IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA]) {
                 [self wasUnpaired];
