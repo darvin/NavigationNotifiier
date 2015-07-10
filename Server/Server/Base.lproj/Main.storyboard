@@ -45,14 +45,30 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bsm-hN-6o4">
+                                <rect key="frame" x="16" y="505" width="568" height="75"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="fbv-34-dIC"/>
+                                </constraints>
+                                <state key="normal" title="Send Test Notification">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="testNotificationButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pTd-Us-jMd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="RF2-rg-4jI" secondAttribute="centerX" id="6jt-1X-8yh"/>
+                            <constraint firstItem="bsm-hN-6o4" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="EC0-FS-02O"/>
                             <constraint firstItem="0kd-9p-u90" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="Gp1-RQ-9ab"/>
+                            <constraint firstItem="bsm-hN-6o4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="HlZ-6U-6TK"/>
                             <constraint firstItem="Dhp-zw-jia" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="12" id="MNr-Wr-8Vi"/>
                             <constraint firstItem="Dhp-zw-jia" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="NWT-QN-n6S"/>
                             <constraint firstItem="wA8-OT-wdQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="QYb-Uo-Wtv"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bsm-hN-6o4" secondAttribute="bottom" constant="20" id="W74-fK-OUA"/>
                             <constraint firstItem="wA8-OT-wdQ" firstAttribute="top" secondItem="Dhp-zw-jia" secondAttribute="bottom" constant="8" id="bfj-wY-nPR"/>
                             <constraint firstItem="0kd-9p-u90" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="cWh-6q-jTC"/>
                             <constraint firstAttribute="centerY" secondItem="RF2-rg-4jI" secondAttribute="centerY" constant="10" id="mQh-Ts-U9u"/>

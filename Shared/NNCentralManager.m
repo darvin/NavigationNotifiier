@@ -33,7 +33,6 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     NSMutableArray *_peripheralsForDiscovery;
     NSMutableDictionary *_pairedClientNamesForDiscovery;
     NSMutableDictionary *_serverNamesForDiscovery;
-    NSMutableArray *_discoveredServices;
     
 }
 
@@ -42,7 +41,6 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
         _delegateQueue = dispatch_queue_create("com.darvin.navigationNotifier.Client.DelegateDispatchQueue", DISPATCH_QUEUE_SERIAL);
         _state = NNCentralManagerStateIdle;
         _peripheralsForDiscovery = [[NSMutableArray alloc] init];
-        _discoveredServices = [[NSMutableArray alloc] init];
         _pairedClientNamesForDiscovery = [[NSMutableDictionary alloc] init];
         _serverNamesForDiscovery = [[NSMutableDictionary alloc] init];
     }
@@ -239,13 +237,13 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
 }
 
-- (void)peripheralDidUpdateName:(CBPeripheral *)peripheral NS_AVAILABLE(NA, 6_0) {
+- (void)peripheralDidUpdateName:(CBPeripheral *)peripheral  {
     
 }
-- (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray *)invalidatedServices NS_AVAILABLE(NA, 7_0) {
+- (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray *)invalidatedServices  {
     
 }
-- (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error NS_AVAILABLE(NA, 8_0) {
+- (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error  {
     if (error!=nil) {
         NSLog(@"Error! %@",error);
         return;
@@ -264,11 +262,9 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
             if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
                 NSLog(@"Discovered NavNotify service");
                 [peripheral discoverCharacteristics:@[IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID, IND_NN_SERVER_NAME_CHAR_UUID] forService:service];
-                [_discoveredServices addObject:service];
             } else if ([service.UUID isEqual:IND_ANCS_SV_UUID]) {
                 NSLog(@"Discovered Apple Notification Center service");
                 [peripheral discoverCharacteristics:@[IND_ANCS_CP_UUID, IND_ANCS_DS_UUID, IND_ANCS_NS_UUID] forService:service];
-                [_discoveredServices addObject:service];
 
             }
         }
@@ -310,6 +306,10 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     } else if (_state==NNCentralManagerStateConnection) {
         if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
             [self connectionPairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding]];
+        } else if ([characteristic.UUID isEqual:IND_ANCS_NS_UUID]) {
+            NSLog(@"ANCS Notification Received!");
+        } else if ([characteristic.UUID isEqual:IND_ANCS_DS_UUID]) {
+            NSLog(@"ANCS Data Source Received!");
         }
 
     }

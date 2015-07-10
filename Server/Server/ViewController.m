@@ -38,7 +38,17 @@
     [_connManager unpair];
 }
 
+-(IBAction)testNotificationButtonTouched:(id)sender {
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeSound|UIUserNotificationTypeBadge
+                                                                                                              categories:nil]];
+    }
 
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.alertBody = @"Test Notification";
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+
+}
 - (void)updateStatus {
     self.unpairButton.hidden = !_connManager.isPaired;
     self.pairedStatusLabel.text = _connManager.isPaired? [NSString stringWithFormat:@"Paired with %@", _connManager.pairedRemoteName] : @"Not paired";

@@ -14,6 +14,7 @@
 @property (assign) IBOutlet UILabel *localNameLabel;
 @property (assign) IBOutlet UILabel *connectionStatusLabel;
 -(IBAction)unpairButtonTouched:(id)sender;
+-(IBAction)testNotificationButtonTouched:(id)sender;
 
 @end
 

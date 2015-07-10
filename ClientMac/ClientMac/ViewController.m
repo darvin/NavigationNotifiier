@@ -54,7 +54,7 @@
 }
 -(IBAction)discoverConnectButtonTouched:(id)sender {
     self.connectionLabel.stringValue = @"Connecting...";
-    
+    self.discoverConnectButton.hidden = YES;
     [_manager connect];
 }
 
