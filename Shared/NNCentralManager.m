@@ -8,7 +8,6 @@
 
 #import "NNCentralManager.h"
 #import <CoreBluetooth/CoreBluetooth.h>
-#import <UIKit/UIDevice.h>
 #import "BLEIDs.h"
 
 NS_ENUM(NSInteger, NNCentralManagerState) {
@@ -191,7 +190,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
         if (_state==NNCentralManagerStateDiscovery) {
             [central scanForPeripheralsWithServices:@[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID] options:@{
                                                                   CBCentralManagerScanOptionSolicitedServiceUUIDsKey:
-                                                                                         @[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID]}];
+                                                                                         @[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID],
+                                                                  CBCentralManagerScanOptionAllowDuplicatesKey: @NO}];
         }
     } else {
         _state = NNCentralManagerStateIdle;
