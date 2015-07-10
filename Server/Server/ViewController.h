@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
-
+@property (assign) IBOutlet UIButton *unpairButton;
+@property (assign) IBOutlet UILabel *pairedStatusLabel;
+@property (assign) IBOutlet UILabel *connectionStatusLabel;
+-(IBAction)unpairButtonTouched:(id)sender;
 
 @end
 

@@ -12,6 +12,10 @@
 #import "../../Shared/BLEIDs.h"
 
 @interface NNPeripheralManager() <CBPeripheralManagerDelegate>
+-(NSString *)pairedClientName;
+-(NSString *)serverName;
+
+-(void)unpaired;
 
 @end
 
@@ -27,18 +31,34 @@
 - (id) init {
     if (self = [super init]) {
         _delegateQueue = dispatch_queue_create("com.darvin.navigationNotifier.Server.DelegateDispatchQueue", DISPATCH_QUEUE_SERIAL);
-        NSDictionary *options =@{CBPeripheralManagerOptionShowPowerAlertKey : @YES,
-                                 CBPeripheralManagerOptionRestoreIdentifierKey: @"NavigationNotifierServerPeripheral"} ;
-        _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:_delegateQueue options:options];
+        
+
     }
     return self;
 }
 
+
+- (BOOL)isPaired {
+    return [self pairedClientName]!=nil;
+}
+- (NSString *)pairedRemoteName {
+    return [self pairedClientName];
+}
+
 - (void) unpair {
-    
+    [self unpaired];
 }
 - (void) connect {
-    
+    if (![[self pairedClientName] isEqualToString:IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA]) {
+        //already paired lets call delegate
+        if ([self.delegate respondsToSelector:@selector(connectionManager:pairedWith:)]) {
+            [self.delegate connectionManager:self pairedWith:[self pairedClientName]];
+        }
+    }
+    NSDictionary *options =@{CBPeripheralManagerOptionShowPowerAlertKey : @YES,
+                             CBPeripheralManagerOptionRestoreIdentifierKey: @"NavigationNotifierServerPeripheral"} ;
+    _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:_delegateQueue options:options];
+
 }
 - (void)startAdvertising
 {
@@ -56,13 +76,47 @@
     }
 }
 
+- (void)unpaired {
+    [self setPairedClientName:nil];
+    if ([self.delegate respondsToSelector:@selector(connectionManagerUnpaired:)]) {
+        //fixme proper queue in case of client-side unpairing
+        [self.delegate connectionManagerUnpaired:self];
+    }
+}
+
+- (void)connectedToClientName:(NSString *)clientName {
+    if ([clientName isEqualToString:[self pairedClientName]]) {
+        //paired already, reconnection
+      
+    } else {
+        //new pairing, refresh pairing
+        [self setPairedClientName:clientName];
+        [self notifyCentralsWithPairedClientName];
+        if ([self.delegate respondsToSelector:@selector(connectionManager:pairedWith:)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate connectionManager:self pairedWith:clientName];
+            });
+            
+        }
+
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(connectionManager:connectedWith:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate connectionManager:self connectedWith:clientName];
+        });
+        
+    }
+}
+
+- (void)notifyCentralsWithPairedClientName {
+    //fixme in order to implement unpairing on already connected clients
+}
 
 - (NSString *)pairedClientName {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *pairedClientName = [defaults stringForKey:@"pairedClientName"];
-    if (pairedClientName==nil) {
-        pairedClientName = IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA;
-    }
+
     return pairedClientName;
     
 }
@@ -123,10 +177,33 @@
     
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
+    //fixme: only 0 offsets
+    if (request.offset!=0) {
+        [peripheral respondToRequest:request withResult: CBATTErrorInvalidOffset];
+        return;
+    }
+    
+    if ([request.characteristic.UUID isEqual:IND_NN_SERVER_NAME_CHAR_UUID]) {
+        request.value = [[self serverName] dataUsingEncoding:NSUTF8StringEncoding];
+        [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
+    } else if ([request.characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+        NSString *pairedClientName = [self pairedClientName];
+        request.value = [pairedClientName?pairedClientName:IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA dataUsingEncoding:NSUTF8StringEncoding];
+        [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
+
+    }
     
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests {
-    
+    for (CBATTRequest* request in requests) {
+        if ([request.characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+            [self connectedToClientName:[[NSString alloc] initWithData:request.value encoding:NSUTF8StringEncoding]];
+            
+        }
+
+    }
+    [peripheral respondToRequest:requests[0] withResult:CBATTErrorSuccess];
+
 }
 - (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral {
     

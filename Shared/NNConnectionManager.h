@@ -10,12 +10,15 @@
 - (void)connectionManager:(id<NNConnectionManager>)manager connectedWith:(NSString *)remoteName;
 
 - (void)connectionManagerDisconnected:(id<NNConnectionManager>)manager;
+- (void)connectionManagerUnpaired:(id<NNConnectionManager>)manager;
 
 
 @end
 
 @protocol NNConnectionManager <NSObject>
 @property (weak) id<NNConnectionManagerDelegate> delegate;
+@property (readonly) BOOL isPaired;
+@property (readonly) NSString *pairedRemoteName;
 - (void) unpair;
 - (void) connect;
 @end
