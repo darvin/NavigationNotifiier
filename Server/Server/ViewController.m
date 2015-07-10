@@ -7,16 +7,21 @@
 //
 
 #import "ViewController.h"
-
-@interface ViewController ()
+#import "NNPeripheralManager.h"
+@interface ViewController () <NNConnectionManagerDelegate>
 
 @end
 
-@implementation ViewController
+@implementation ViewController {
+    NNPeripheralManager *_connManager;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    _connManager = [[NNPeripheralManager alloc] init];
+    _connManager.delegate = self;
+    [_connManager connect];
 }
 
 - (void)didReceiveMemoryWarning {
