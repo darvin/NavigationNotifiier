@@ -44,6 +44,7 @@
     }
     
     self.connectionLabel.hidden = !_isConnected;
+    self.disconnectButton.hidden = !_isConnected;
     self.discoverConnectButton.hidden = _isConnected;
 }
 -(IBAction)unpairButtonTouched:(id)sender {

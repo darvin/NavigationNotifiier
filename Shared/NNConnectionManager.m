@@ -30,7 +30,10 @@
 - (void) wasUnpaired {
     [self setPairedRemoteName:nil];
     if ([self.delegate respondsToSelector:@selector(connectionManagerUnpaired:)]) {
-        [self.delegate connectionManagerUnpaired:self];
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [self.delegate connectionManagerUnpaired:self];
+        });
     }
 
 }
@@ -60,7 +63,13 @@
 }
 
 - (void) wasDisconnected {
-    
+    if ([self.delegate respondsToSelector:@selector(connectionManagerDisconnected:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate connectionManagerDisconnected:self];
+        });
+        
+    }
+
 }
 
 @end

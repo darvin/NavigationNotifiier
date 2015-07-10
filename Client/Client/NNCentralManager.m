@@ -58,6 +58,19 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 
 }
 
+- (void)disconnect {
+    _state = NNCentralManagerStateIdle;
+    _connectedPeripheral.delegate = nil;
+    [_manager cancelPeripheralConnection:_connectedPeripheral];
+    _manager.delegate = nil;
+    _manager = nil;
+    [self wasDisconnected];
+    
+}
+- (void) unpair {
+    [self disconnect];
+    [self wasUnpaired];
+}
 
 - (void)estabilishConnectionWithEligiblePeripheral:(CBPeripheral *) peripheral {
     [_manager stopScan];
@@ -65,9 +78,10 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     for (CBPeripheral *eachPeripheral in [_peripheralsForDiscovery copy]) {
         if (![eachPeripheral isEqual:peripheral]) {
             eachPeripheral.delegate = nil;
-            [_peripheralsForDiscovery removeObject:eachPeripheral];
             [_manager cancelPeripheralConnection:eachPeripheral];
         }
+        [_peripheralsForDiscovery removeObject:eachPeripheral];
+
     }
     _connectedPeripheral = peripheral;
     for (CBService *service in _connectedPeripheral.services) {
@@ -238,6 +252,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error {
     
 }
+
 
 
 @end
