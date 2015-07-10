@@ -1,5 +1,13 @@
 # NavigationNotifiier
-iOS application that shows navigation notifications from another iOS device
+Mac application that shows Notification Center notifications from another iOS device, with strict one-to-one pairing
+
+_Its a prototype of of app that is going to be runned on MCU based bluetooth enabled controller that would be showing notifications of connected iOS device on screen, in the car_
+
+_I started to develop it on iOS, but apparently Apple does not allow read ANCS BLE service from another iOS device. Pairing works nontheless. The good enviroment for testing pairing features is Mac running ClientMac, iOS device running Client and iOS device running Server_
+
+_Pairing management part is done, ANCS notifications just started. Total development time right now about 8 hours (without coffee breaks)_
+
+_Its gonna look better after the weekend_
 
 
 # Server app
@@ -26,6 +34,7 @@ Once connected, Client becomes paired to this Server, "Unpair" button appears, a
 
 ## Notifications
 
+_Not yet implemented, just started ANCS byte crunching_
 
 # Pairing routine
 Server app exposes read only BLE characteristic "SERVER NAME" which is equal to its own unique randomly generated persistive between launches name.

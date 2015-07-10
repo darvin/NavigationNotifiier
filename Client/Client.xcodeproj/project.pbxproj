@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		573865BC1B4F73A000AC2FBF /* NNConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865BB1B4F73A000AC2FBF /* NNConnectionManager.m */; };
 		573865C21B4FC8F100AC2FBF /* NNCentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865C11B4FC8F100AC2FBF /* NNCentralManager.m */; };
+		573866081B4FF6BD00AC2FBF /* NNANCSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573866071B4FF6BD00AC2FBF /* NNANCSManager.m */; };
 		57B80AA71B4F437100546F48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AA61B4F437100546F48 /* main.m */; };
 		57B80AAA1B4F437100546F48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AA91B4F437100546F48 /* AppDelegate.m */; };
 		57B80AAD1B4F437100546F48 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AAC1B4F437100546F48 /* ViewController.m */; };
@@ -34,6 +35,9 @@
 		573865BB1B4F73A000AC2FBF /* NNConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNConnectionManager.m; sourceTree = "<group>"; };
 		573865C01B4FC8F100AC2FBF /* NNCentralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNCentralManager.h; sourceTree = "<group>"; };
 		573865C11B4FC8F100AC2FBF /* NNCentralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNCentralManager.m; sourceTree = "<group>"; };
+		573866051B4FF6BD00AC2FBF /* ANCS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANCS.h; sourceTree = "<group>"; };
+		573866061B4FF6BD00AC2FBF /* NNANCSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNANCSManager.h; sourceTree = "<group>"; };
+		573866071B4FF6BD00AC2FBF /* NNANCSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNANCSManager.m; sourceTree = "<group>"; };
 		57B80AA11B4F437100546F48 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B80AA51B4F437100546F48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57B80AA61B4F437100546F48 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -71,6 +75,9 @@
 			isa = PBXGroup;
 			children = (
 				573865B91B4F73A000AC2FBF /* BLEIDs.h */,
+				573866051B4FF6BD00AC2FBF /* ANCS.h */,
+				573866061B4FF6BD00AC2FBF /* NNANCSManager.h */,
+				573866071B4FF6BD00AC2FBF /* NNANCSManager.m */,
 				573865BA1B4F73A000AC2FBF /* NNConnectionManager.h */,
 				573865BB1B4F73A000AC2FBF /* NNConnectionManager.m */,
 				573865C01B4FC8F100AC2FBF /* NNCentralManager.h */,
@@ -240,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				573866081B4FF6BD00AC2FBF /* NNANCSManager.m in Sources */,
 				57B80AAD1B4F437100546F48 /* ViewController.m in Sources */,
 				573865BC1B4F73A000AC2FBF /* NNConnectionManager.m in Sources */,
 				57B80AAA1B4F437100546F48 /* AppDelegate.m in Sources */,

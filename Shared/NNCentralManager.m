@@ -9,6 +9,7 @@
 #import "NNCentralManager.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BLEIDs.h"
+#import "NNANCSManager.h"
 
 NS_ENUM(NSInteger, NNCentralManagerState) {
     NNCentralManagerStateIdle,
@@ -17,7 +18,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     NNCentralManagerStateDisconnecting
 };
 
-@interface NNCentralManager ()  <CBCentralManagerDelegate, CBPeripheralDelegate>;
+@interface NNCentralManager ()  <CBCentralManagerDelegate, CBPeripheralDelegate, NNANCSManagerDelegate>;
 @end
 
 @implementation NNCentralManager
@@ -29,7 +30,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
     CBPeripheral *_connectedPeripheral;
     
-    
+    NNANCSManager *_ancsManager;
     NSMutableArray *_peripheralsForDiscovery;
     NSMutableDictionary *_pairedClientNamesForDiscovery;
     NSMutableDictionary *_serverNamesForDiscovery;
@@ -38,6 +39,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 
 - (id) init {
     if (self = [super init]) {
+        _ancsManager = [[NNANCSManager alloc] init];
+        _ancsManager.delegate = self;
         _delegateQueue = dispatch_queue_create("com.darvin.navigationNotifier.Client.DelegateDispatchQueue", DISPATCH_QUEUE_SERIAL);
         _state = NNCentralManagerStateIdle;
         _peripheralsForDiscovery = [[NSMutableArray alloc] init];
@@ -77,7 +80,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 - (void) unpair {
     if (_connectedPeripheral!=nil) {
         CBCharacteristic *pairedClientCharacteristic = [self pairedClientNameCharacteristicForPeripheral:_connectedPeripheral];
-        [_connectedPeripheral writeValue:[IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:pairedClientCharacteristic type:CBCharacteristicWriteWithResponse];
+        if (pairedClientCharacteristic !=nil)
+            [_connectedPeripheral writeValue:[IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:pairedClientCharacteristic type:CBCharacteristicWriteWithResponse];
     }
 
     [self disconnect];
@@ -119,6 +123,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
     [self subscribeANCS:peripheral];
 }
+
 
 - (void) subscribeANCS:(CBPeripheral *) peripheral {
     for (CBService *service in peripheral.services) {
@@ -208,7 +213,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
     NSLog(@"Discovered %@", peripheral);
 
-    if (_state==NNCentralManagerStateDiscovery) {
+    if (_state==NNCentralManagerStateDiscovery && ![_peripheralsForDiscovery containsObject:peripheral]) {
         [_peripheralsForDiscovery addObject:peripheral];
         peripheral.delegate = self;
         [central connectPeripheral:peripheral options:nil];
@@ -307,8 +312,10 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
         if ([characteristic.UUID isEqual:NN_NN_CHAR_PAIRED_CLIENT_NAME_UUID]) {
             [self connectionPairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding]];
         } else if ([characteristic.UUID isEqual:NN_ANCS_CHAR_NOTIFICATION_SOURCE_UUID]) {
+            [_ancsManager receivedNotification:characteristic.value];
             NSLog(@"ANCS Notification Received!");
         } else if ([characteristic.UUID isEqual:NN_ANCS_CHAR_DATA_SOURCE_UUID]) {
+            [_ancsManager receivedDataSource:characteristic.value];
             NSLog(@"ANCS Data Source Received!");
         }
 
@@ -360,6 +367,24 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
 }
 
+
+-(void)ancsManager:(NNANCSManager *)manager needsSendDataToControlPoint:(NSData*)data {
+    for (CBService *service in _connectedPeripheral.services) {
+        if ([service.UUID isEqual:NN_ANCS_SERVICE_UUID]) {
+            for (CBCharacteristic *characteristic in service.characteristics) {
+                if ([characteristic.UUID isEqual:NN_ANCS_CHAR_CONTROL_POINT_UUID]) {
+                    [_connectedPeripheral writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+                }
+            }
+        }
+    }
+
+}
+-(void)ancsManager:(NNANCSManager *)manager messageAdded:(NNANCSMessage*)message {
+    if (self.messageReceivedCallback != nil) {
+        self.messageReceivedCallback(message);
+    }
+}
 
 
 @end

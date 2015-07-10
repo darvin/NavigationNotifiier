@@ -15,6 +15,7 @@
 		573865E91B4FC93D00AC2FBF /* ClientMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865E81B4FC93D00AC2FBF /* ClientMacTests.m */; };
 		573865F81B4FC94E00AC2FBF /* NNCentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865F51B4FC94E00AC2FBF /* NNCentralManager.m */; };
 		573865F91B4FC94E00AC2FBF /* NNConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865F71B4FC94E00AC2FBF /* NNConnectionManager.m */; };
+		573866041B4FDDF700AC2FBF /* NNANCSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573866031B4FDDF700AC2FBF /* NNANCSManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,9 @@
 		573865F51B4FC94E00AC2FBF /* NNCentralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNCentralManager.m; sourceTree = "<group>"; };
 		573865F61B4FC94E00AC2FBF /* NNConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNConnectionManager.h; sourceTree = "<group>"; };
 		573865F71B4FC94E00AC2FBF /* NNConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNConnectionManager.m; sourceTree = "<group>"; };
+		573866011B4FDDF700AC2FBF /* ANCS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANCS.h; sourceTree = "<group>"; };
+		573866021B4FDDF700AC2FBF /* NNANCSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNANCSManager.h; sourceTree = "<group>"; };
+		573866031B4FDDF700AC2FBF /* NNANCSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNANCSManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,9 @@
 		573865F21B4FC94E00AC2FBF /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				573866011B4FDDF700AC2FBF /* ANCS.h */,
+				573866021B4FDDF700AC2FBF /* NNANCSManager.h */,
+				573866031B4FDDF700AC2FBF /* NNANCSManager.m */,
 				573865F31B4FC94E00AC2FBF /* BLEIDs.h */,
 				573865F41B4FC94E00AC2FBF /* NNCentralManager.h */,
 				573865F51B4FC94E00AC2FBF /* NNCentralManager.m */,
@@ -236,6 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				573866041B4FDDF700AC2FBF /* NNANCSManager.m in Sources */,
 				573865D81B4FC93D00AC2FBF /* ViewController.m in Sources */,
 				573865F81B4FC94E00AC2FBF /* NNCentralManager.m in Sources */,
 				573865F91B4FC94E00AC2FBF /* NNConnectionManager.m in Sources */,
@@ -430,6 +438,7 @@
 				573865EE1B4FC93D00AC2FBF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		573865EF1B4FC93D00AC2FBF /* Build configuration list for PBXNativeTarget "ClientMacTests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +447,7 @@
 				573865F11B4FC93D00AC2FBF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

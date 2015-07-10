@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "NNConnectionManager.h"
-
+@class NNANCSMessage;
 @interface NNCentralManager : NNConnectionManager
+@property (nonatomic, copy) void (^messageReceivedCallback)(NNANCSMessage *);
 - (void)disconnect;
 @end
