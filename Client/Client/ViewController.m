@@ -23,6 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _manager = [[NNCentralManager alloc] init];
+    _manager.delegate = self;
     _isConnected = NO;
     [self updateStatus];
     [self discoverConnectButtonTouched:self];
