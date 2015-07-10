@@ -23,7 +23,6 @@
     CBMutableService *_service;
 
 }
-@synthesize delegate = _delegate;
 
 - (id) init {
     if (self = [super init]) {
@@ -87,7 +86,7 @@
     CBMutableService *service = [[CBMutableService alloc] initWithType:IND_NN_SERVICE_UUID primary:YES];
     
     CBMutableCharacteristic *pairedClientName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead|CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
-    CBMutableCharacteristic *serverName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_SERVER_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead value:[[self localName] dataUsingEncoding:NSUTF8StringEncoding] permissions:CBAttributePermissionsReadable];
+    CBMutableCharacteristic *serverName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_SERVER_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
 
     service.characteristics = @[pairedClientName, serverName];
     return service;

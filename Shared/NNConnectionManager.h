@@ -21,7 +21,6 @@
 
 - (void) wasUnpaired;
 - (void) wasConnectedToRemote:(NSString *)remoteName;
-- (void) wasPairedWithRemote:(NSString *)remoteName;
 - (void) wasDisconnected;
 @end
 

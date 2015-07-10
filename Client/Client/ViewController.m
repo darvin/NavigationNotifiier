@@ -16,13 +16,16 @@
 
 @implementation ViewController {
     NNCentralManager *_manager;
+    BOOL _isConnected;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _manager = [[NNCentralManager alloc] init];
+    _isConnected = NO;
     [self updateStatus];
+    [self discoverConnectButtonTouched:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,6 +41,9 @@
     } else {
         self.discoverConnectButton.titleLabel.text = @"Discover Server app";
     }
+    
+    self.connectionLabel.hidden = !_isConnected;
+    self.discoverConnectButton.hidden = _isConnected;
 }
 -(IBAction)unpairButtonTouched:(id)sender {
     [_manager unpair];
@@ -55,13 +61,16 @@
     [self updateStatus];
 }
 - (void)connectionManager:(NNConnectionManager *)manager connectedWith:(NSString *)remoteName {
-    self.discoverConnectButton.hidden = YES;
     self.connectionLabel.text = [NSString stringWithFormat:@"Connected to %@", remoteName];
+    _isConnected = YES;
+    [self updateStatus];
 }
 
 - (void)connectionManagerDisconnected:(NNConnectionManager *)manager {
-    self.discoverConnectButton.hidden = NO;
     self.connectionLabel.text = @"Disconnected";
+    _isConnected = NO;
+    [self updateStatus];
+
 }
 - (void)connectionManagerUnpaired:(NNConnectionManager *)manager {
     [self updateStatus];

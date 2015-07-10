@@ -58,9 +58,7 @@
     }
 
 }
-- (void) wasPairedWithRemote:(NSString *)remoteName {
-    
-}
+
 - (void) wasDisconnected {
     
 }
