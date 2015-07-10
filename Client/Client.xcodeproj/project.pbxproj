@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		573865AB1B4F6BEF00AC2FBF /* Shared in Resources */ = {isa = PBXBuildFile; fileRef = 573865AA1B4F6BEF00AC2FBF /* Shared */; };
+		573865AE1B4F6C0000AC2FBF /* NNCentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865AD1B4F6C0000AC2FBF /* NNCentralManager.m */; };
 		57B80AA71B4F437100546F48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AA61B4F437100546F48 /* main.m */; };
 		57B80AAA1B4F437100546F48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AA91B4F437100546F48 /* AppDelegate.m */; };
 		57B80AAD1B4F437100546F48 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AAC1B4F437100546F48 /* ViewController.m */; };
@@ -27,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		573865AA1B4F6BEF00AC2FBF /* Shared */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shared; path = ../Shared; sourceTree = "<group>"; };
+		573865AC1B4F6C0000AC2FBF /* NNCentralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNCentralManager.h; sourceTree = "<group>"; };
+		573865AD1B4F6C0000AC2FBF /* NNCentralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNCentralManager.m; sourceTree = "<group>"; };
 		57B80AA11B4F437100546F48 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B80AA51B4F437100546F48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57B80AA61B4F437100546F48 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -63,6 +68,7 @@
 		57B80A981B4F437100546F48 = {
 			isa = PBXGroup;
 			children = (
+				573865AA1B4F6BEF00AC2FBF /* Shared */,
 				57B80AA31B4F437100546F48 /* Client */,
 				57B80ABD1B4F437100546F48 /* ClientTests */,
 				57B80AA21B4F437100546F48 /* Products */,
@@ -89,6 +95,8 @@
 				57B80AB11B4F437100546F48 /* Images.xcassets */,
 				57B80AB31B4F437100546F48 /* LaunchScreen.xib */,
 				57B80AA41B4F437100546F48 /* Supporting Files */,
+				573865AC1B4F6C0000AC2FBF /* NNCentralManager.h */,
+				573865AD1B4F6C0000AC2FBF /* NNCentralManager.m */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -200,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57B80AB01B4F437100546F48 /* Main.storyboard in Resources */,
+				573865AB1B4F6BEF00AC2FBF /* Shared in Resources */,
 				57B80AB51B4F437100546F48 /* LaunchScreen.xib in Resources */,
 				57B80AB21B4F437100546F48 /* Images.xcassets in Resources */,
 			);
@@ -220,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57B80AAD1B4F437100546F48 /* ViewController.m in Sources */,
+				573865AE1B4F6C0000AC2FBF /* NNCentralManager.m in Sources */,
 				57B80AAA1B4F437100546F48 /* AppDelegate.m in Sources */,
 				57B80AA71B4F437100546F48 /* main.m in Sources */,
 			);
@@ -418,6 +428,7 @@
 				57B80AC61B4F437100546F48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		57B80AC71B4F437100546F48 /* Build configuration list for PBXNativeTarget "ClientTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +437,7 @@
 				57B80AC91B4F437100546F48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
