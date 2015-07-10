@@ -49,6 +49,10 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 }
 
 - (void) connect {
+    if (_state!=NNCentralManagerStateIdle) {
+        NSLog(@"Trying to connect not from idle, error");
+        return;
+    }
     NSDictionary *options =@{CBCentralManagerOptionShowPowerAlertKey : @YES,
                              //fixme no backgrounding for now
 //                             CBCentralManagerOptionRestoreIdentifierKey: @"NavigationNotifierClientCentral"
