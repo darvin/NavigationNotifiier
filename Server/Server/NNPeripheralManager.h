@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "../../Shared/NNConnectionManager.h"
 
-@interface NNPeripheralManager : NSObject  <NNConnectionManager>
+@interface NNPeripheralManager : NNConnectionManager
 
 
 

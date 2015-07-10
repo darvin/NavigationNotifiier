@@ -42,17 +42,17 @@
     self.pairedStatusLabel.text = _connManager.isPaired? [NSString stringWithFormat:@"Paired with %@", _connManager.pairedRemoteName] : @"Not paired";
 }
 
-- (void)connectionManager:(id<NNConnectionManager>)manager pairedWith:(NSString *)remoteName {
+- (void)connectionManager:(NNConnectionManager *)manager pairedWith:(NSString *)remoteName {
     [self updateStatus];
 }
-- (void)connectionManager:(id<NNConnectionManager>)manager connectedWith:(NSString *)remoteName {
+- (void)connectionManager:(NNConnectionManager *)manager connectedWith:(NSString *)remoteName {
     self.connectionStatusLabel.text = [NSString stringWithFormat:@"Conected to %@", remoteName];
 }
 
-- (void)connectionManagerDisconnected:(id<NNConnectionManager>)manager {
+- (void)connectionManagerDisconnected:(NNConnectionManager *)manager {
     self.connectionStatusLabel.text = @"Not connected";
 }
-- (void)connectionManagerUnpaired:(id<NNConnectionManager>)manager {
+- (void)connectionManagerUnpaired:(NNConnectionManager *)manager {
     [self updateStatus];
 
 }

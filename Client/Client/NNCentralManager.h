@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "../../Shared/NNConnectionManager.h"
 
-@interface NNCentralManager : NSObject<NNConnectionManager>
+@interface NNCentralManager : NNConnectionManager
 - (void)disconnect;
 @end

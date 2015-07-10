@@ -1,26 +1,27 @@
-#ifndef CONNECTIONMANAGER_h
-#define CONNECTIONMANAGER_h
 #import <Foundation/Foundation.h>
 
-
-@protocol NNConnectionManager;
+@class NNConnectionManager;
 
 @protocol NNConnectionManagerDelegate <NSObject>
-- (void)connectionManager:(id<NNConnectionManager>)manager pairedWith:(NSString *)remoteName;
-- (void)connectionManager:(id<NNConnectionManager>)manager connectedWith:(NSString *)remoteName;
+- (void)connectionManager:(NNConnectionManager *)manager pairedWith:(NSString *)remoteName;
+- (void)connectionManager:(NNConnectionManager *)manager connectedWith:(NSString *)remoteName;
 
-- (void)connectionManagerDisconnected:(id<NNConnectionManager>)manager;
-- (void)connectionManagerUnpaired:(id<NNConnectionManager>)manager;
+- (void)connectionManagerDisconnected:(NNConnectionManager *)manager;
+- (void)connectionManagerUnpaired:(NNConnectionManager *)manager;
 
 
 @end
 
-@protocol NNConnectionManager <NSObject>
+@interface NNConnectionManager : NSObject
 @property (weak) id<NNConnectionManagerDelegate> delegate;
 @property (readonly) BOOL isPaired;
-@property (readonly) NSString *pairedRemoteName;
+@property (readwrite, copy) NSString *pairedRemoteName;
 - (void) unpair;
 - (void) connect;
+
+- (void) wasUnpaired;
+- (void) wasConnectedToRemote:(NSString *)remoteName;
+- (void) wasPairedWithRemote:(NSString *)remoteName;
+- (void) wasDisconnected;
 @end
 
-#endif

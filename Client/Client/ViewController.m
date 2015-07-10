@@ -51,19 +51,19 @@
     [_manager connect];
 }
 
-- (void)connectionManager:(id<NNConnectionManager>)manager pairedWith:(NSString *)remoteName {
+- (void)connectionManager:(NNConnectionManager *)manager pairedWith:(NSString *)remoteName {
     [self updateStatus];
 }
-- (void)connectionManager:(id<NNConnectionManager>)manager connectedWith:(NSString *)remoteName {
+- (void)connectionManager:(NNConnectionManager *)manager connectedWith:(NSString *)remoteName {
     self.discoverConnectButton.hidden = YES;
     self.connectionLabel.text = [NSString stringWithFormat:@"Connected to %@", remoteName];
 }
 
-- (void)connectionManagerDisconnected:(id<NNConnectionManager>)manager {
+- (void)connectionManagerDisconnected:(NNConnectionManager *)manager {
     self.discoverConnectButton.hidden = NO;
     self.connectionLabel.text = @"Disconnected";
 }
-- (void)connectionManagerUnpaired:(id<NNConnectionManager>)manager {
+- (void)connectionManagerUnpaired:(NNConnectionManager *)manager {
     [self updateStatus];
 
 }
