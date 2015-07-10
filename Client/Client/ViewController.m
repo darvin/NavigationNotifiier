@@ -36,13 +36,15 @@
 
 - (void) updateStatus {
     self.pairedLabel.hidden = self.unpairButton.hidden = !_manager.isPaired;
+    NSString *discoverButtonText = @"Discover Server app";
     if (_manager.isPaired) {
         self.pairedLabel.text = [NSString stringWithFormat:@"Paired with %@", _manager.pairedRemoteName];
-        self.discoverConnectButton.titleLabel.text = [NSString stringWithFormat:@"Connect to %@", _manager.pairedRemoteName];
-    } else {
-        self.discoverConnectButton.titleLabel.text = @"Discover Server app";
+        discoverButtonText = [NSString stringWithFormat:@"Connect to %@", _manager.pairedRemoteName];
+        
     }
-    
+    [self.discoverConnectButton setTitle:discoverButtonText forState:UIControlStateNormal];
+    [self.discoverConnectButton setTitle:discoverButtonText forState:UIControlStateSelected];
+
     self.connectionLabel.hidden = !_isConnected;
     self.disconnectButton.hidden = !_isConnected;
     self.discoverConnectButton.hidden = _isConnected;

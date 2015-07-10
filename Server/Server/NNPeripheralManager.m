@@ -12,7 +12,8 @@
 #import "../../Shared/BLEIDs.h"
 
 @interface NNPeripheralManager() <CBPeripheralManagerDelegate>
-
+- (NSData *)pairedClientNameData;
+- (NSData *)serverNameData;
 
 @end
 
@@ -37,7 +38,7 @@
 
 - (void) unpair {
     [self wasUnpaired];
-    [self notifyCentralsWithpairedRemoteName];
+    [self notifyCentralsWithPairedRemoteNameSender:nil];
 }
 - (void) connect {
 
@@ -46,6 +47,20 @@
     _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:_delegateQueue options:options];
 
 }
+
+
+- (NSData *)pairedClientNameData {
+    NSString *pairedClientName = [self pairedRemoteName];
+    if (pairedClientName==nil) {
+        pairedClientName = IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA;
+    }
+    return [pairedClientName dataUsingEncoding:NSUTF8StringEncoding];
+}
+- (NSData *)serverNameData {
+    return [[self localName] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+
 - (void)startAdvertising
 {
     if (_manager.state == CBCentralManagerStatePoweredOn && !_manager.isAdvertising) {
@@ -64,9 +79,25 @@
 
 
 
+-(CBMutableCharacteristic *)pairedClientCharacteristic {
+    for (CBMutableCharacteristic *characteristic in _service.characteristics) {
+        if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+            return characteristic;
+        }
+    }
+    return nil;
+}
+- (void)notifyCentralsWithPairedRemoteNameSender:(CBCentral *)sender {
+    CBMutableCharacteristic *pairedClientCharacteristic = [self pairedClientCharacteristic];
+    NSMutableArray *centralsToNotify = [pairedClientCharacteristic.subscribedCentrals mutableCopy];
+    if (sender!=nil) {
+        [centralsToNotify removeObject:sender];
+    }
+    if (centralsToNotify.count>0) {
+        pairedClientCharacteristic.value = [self pairedClientNameData];
+        [_manager updateValue:pairedClientCharacteristic.value forCharacteristic:pairedClientCharacteristic onSubscribedCentrals:centralsToNotify];
 
-- (void)notifyCentralsWithpairedRemoteName {
-    //fixme in order to implement unpairing on already connected clients
+    }
 }
 
 
@@ -85,7 +116,7 @@
 - (CBMutableService *)createService {
     CBMutableService *service = [[CBMutableService alloc] initWithType:IND_NN_SERVICE_UUID primary:YES];
     
-    CBMutableCharacteristic *pairedClientName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead|CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
+    CBMutableCharacteristic *pairedClientName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead|CBCharacteristicPropertyWrite|CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
     CBMutableCharacteristic *serverName = [[CBMutableCharacteristic alloc] initWithType:IND_NN_SERVER_NAME_CHAR_UUID properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
 
     service.characteristics = @[pairedClientName, serverName];
@@ -109,9 +140,16 @@
     
 }
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error {
-    
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     [self startAdvertising];
 
 }
@@ -129,11 +167,10 @@
     }
     
     if ([request.characteristic.UUID isEqual:IND_NN_SERVER_NAME_CHAR_UUID]) {
-        request.value = [[self localName] dataUsingEncoding:NSUTF8StringEncoding];
+        request.value = [self serverNameData];
         [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
     } else if ([request.characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
-        NSString *pairedRemoteName = [self pairedRemoteName];
-        request.value = [pairedRemoteName?pairedRemoteName:IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA dataUsingEncoding:NSUTF8StringEncoding];
+        request.value = [self pairedClientNameData];
         [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
 
     }
@@ -149,7 +186,7 @@
                 [self wasConnectedToRemote:remoteName];
 
             }
-            [self notifyCentralsWithpairedRemoteName];
+            [self notifyCentralsWithPairedRemoteNameSender:request.central];
 
             
         }

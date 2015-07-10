@@ -68,7 +68,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 
         _state = NNCentralManagerStateDisconnecting;
         CBCharacteristic *pairedClientCharacteristic = [self pairedClientNameCharacteristicForPeripheral:_connectedPeripheral];
-        [_connectedPeripheral setNotifyValue:NO forCharacteristic:pairedClientCharacteristic];
+        if (pairedClientCharacteristic!=nil)
+            [_connectedPeripheral setNotifyValue:NO forCharacteristic:pairedClientCharacteristic];
     } else {
         _state = NNCentralManagerStateIdle;
 
@@ -140,17 +141,23 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     [self estabilishConnectionWithEligiblePeripheral:peripheral];
 }
 
-- (void)pairedClientNameReceived:(NSString *)pairedServerName forPeripheral:(CBPeripheral *)peripheral {
-    [_pairedClientNamesForDiscovery setObject:pairedServerName forKey:peripheral];
+- (void)discoveryPairedClientNameReceived:(NSString *)pairedClientName forPeripheral:(CBPeripheral *)peripheral {
+    [_pairedClientNamesForDiscovery setObject:pairedClientName forKey:peripheral];
     [self checkPeripheralIsEligible:peripheral];
 }
 
-- (void)serverNameReceived:(NSString *)serverName forPeripheral:(CBPeripheral *)peripheral {
+- (void)discoveryServerNameReceived:(NSString *)serverName forPeripheral:(CBPeripheral *)peripheral {
     [_serverNamesForDiscovery setObject:serverName forKey:peripheral];
     [self checkPeripheralIsEligible:peripheral];
 
 }
 
+- (void)connectionPairedClientNameReceived:(NSString *)pairedClientName {
+    if (![pairedClientName isEqualToString:[self localName]]) {
+        //server just unpaired us
+        [self unpair];
+    }
+}
 
 - (NSString *)localName {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -199,10 +206,16 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 }
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     NSLog(@"Failed to connect to %@", peripheral);
-    
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
 }
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
-    
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
 }
 
 - (void)peripheralDidUpdateName:(CBPeripheral *)peripheral NS_AVAILABLE(NA, 6_0) {
@@ -212,9 +225,17 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
 }
 - (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error NS_AVAILABLE(NA, 8_0) {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     if (_state==NNCentralManagerStateDiscovery) {
         for (CBService *service in peripheral.services) {
             if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
@@ -226,7 +247,10 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverIncludedServicesForService:(CBService *)service error:(NSError *)error {
-    
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
     if (error!=nil) {
@@ -249,18 +273,30 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
     if (_state==NNCentralManagerStateDiscovery) {
         if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
-            [self pairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] forPeripheral:peripheral];
+            [self discoveryPairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] forPeripheral:peripheral];
         } else  if ([characteristic.UUID isEqual:IND_NN_SERVER_NAME_CHAR_UUID]) {
-            [self serverNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] forPeripheral:peripheral];
+            [self discoveryServerNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] forPeripheral:peripheral];
+        }
+
+    } else if (_state==NNCentralManagerStateConnection) {
+        if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+            [self connectionPairedClientNameReceived:[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding]];
         }
 
     }
-    
+
 }
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
 }
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     if (_state==NNCentralManagerStateDisconnecting) {
         _state = NNCentralManagerStateIdle;
         _connectedPeripheral.delegate = nil;
@@ -274,12 +310,24 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     
 }
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     
 }
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error {
+    if (error!=nil) {
+        NSLog(@"Error! %@",error);
+        return;
+    }
     
 }
 
