@@ -34,6 +34,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     NSMutableArray *_peripheralsForDiscovery;
     NSMutableDictionary *_pairedClientNamesForDiscovery;
     NSMutableDictionary *_serverNamesForDiscovery;
+    NSMutableArray *_discoveredServices;
     
 }
 
@@ -42,6 +43,7 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
         _delegateQueue = dispatch_queue_create("com.darvin.navigationNotifier.Client.DelegateDispatchQueue", DISPATCH_QUEUE_SERIAL);
         _state = NNCentralManagerStateIdle;
         _peripheralsForDiscovery = [[NSMutableArray alloc] init];
+        _discoveredServices = [[NSMutableArray alloc] init];
         _pairedClientNamesForDiscovery = [[NSMutableDictionary alloc] init];
         _serverNamesForDiscovery = [[NSMutableDictionary alloc] init];
     }
@@ -117,8 +119,21 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     NSString *serverName = _serverNamesForDiscovery[peripheral];
     [self setPairedRemoteName:serverName];
     [self wasConnectedToRemote:serverName];
+    
+    [self subscribeANCS:peripheral];
 }
 
+- (void) subscribeANCS:(CBPeripheral *) peripheral {
+    for (CBService *service in peripheral.services) {
+        if ([service.UUID isEqual:IND_ANCS_SV_UUID]) {
+            for (CBCharacteristic *characteristic in service.characteristics) {
+                if ([characteristic.UUID isEqual:IND_ANCS_NS_UUID]||[characteristic.UUID isEqual:IND_ANCS_DS_UUID]) {
+                    [peripheral setNotifyValue:YES forCharacteristic:characteristic];
+                }
+            }
+        }
+    }
+}
 
 - (void)checkPeripheralIsEligible:(CBPeripheral *) peripheral {
     NSString *pairedClientName = _pairedClientNamesForDiscovery[peripheral];
@@ -174,7 +189,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
     if (central.state==CBCentralManagerStatePoweredOn) {
         if (_state==NNCentralManagerStateDiscovery) {
-            [central scanForPeripheralsWithServices:@[IND_NN_SERVICE_UUID] options:@{CBCentralManagerScanOptionSolicitedServiceUUIDsKey:
+            [central scanForPeripheralsWithServices:@[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID] options:@{
+                                                                  CBCentralManagerScanOptionSolicitedServiceUUIDsKey:
                                                                                          @[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID]}];
         }
     } else {
@@ -192,6 +208,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
 }
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
+    NSLog(@"Discovered %@", peripheral);
+
     if (_state==NNCentralManagerStateDiscovery) {
         [_peripheralsForDiscovery addObject:peripheral];
         peripheral.delegate = self;
@@ -199,8 +217,9 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
+    NSLog(@"Connected to %@", peripheral);
     if (_state==NNCentralManagerStateDiscovery) {
-        [peripheral discoverServices:@[IND_NN_SERVICE_UUID]];
+        [peripheral discoverServices:@[IND_NN_SERVICE_UUID, IND_ANCS_SV_UUID]];
     }
     
 }
@@ -212,6 +231,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     }
 }
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
+    NSLog(@"Disconnected %@", peripheral);
+
     if (error!=nil) {
         NSLog(@"Error! %@",error);
         return;
@@ -232,6 +253,8 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
+    NSLog(@"Discovered services %@ : %@", peripheral, peripheral.services);
+
     if (error!=nil) {
         NSLog(@"Error! %@",error);
         return;
@@ -239,8 +262,14 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     if (_state==NNCentralManagerStateDiscovery) {
         for (CBService *service in peripheral.services) {
             if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
+                NSLog(@"Discovered NavNotify service");
                 [peripheral discoverCharacteristics:@[IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID, IND_NN_SERVER_NAME_CHAR_UUID] forService:service];
-                break;
+                [_discoveredServices addObject:service];
+            } else if ([service.UUID isEqual:IND_ANCS_SV_UUID]) {
+                NSLog(@"Discovered Apple Notification Center service");
+                [peripheral discoverCharacteristics:@[IND_ANCS_CP_UUID, IND_ANCS_DS_UUID, IND_ANCS_NS_UUID] forService:service];
+                [_discoveredServices addObject:service];
+
             }
         }
        
