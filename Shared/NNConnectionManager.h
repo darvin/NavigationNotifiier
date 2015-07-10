@@ -16,6 +16,7 @@
 @property (weak) id<NNConnectionManagerDelegate> delegate;
 @property (readonly) BOOL isPaired;
 @property (readwrite, copy) NSString *pairedRemoteName;
+@property (readonly) NSString *localName;
 - (void) unpair;
 - (void) connect;
 

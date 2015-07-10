@@ -698,6 +698,14 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="68B-2h-EG8">
+                                <rect key="frame" x="211" y="85" width="75" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="My name is" id="LDT-SA-dyt">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="02D-gK-ig6">
                                 <rect key="frame" x="356" y="209" width="110" height="32"/>
                                 <buttonCell key="cell" type="push" title="Disconnect" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="XhZ-Si-jiG">
@@ -723,6 +731,7 @@
                             <constraint firstItem="AH9-eN-u0i" firstAttribute="top" secondItem="02D-gK-ig6" secondAttribute="bottom" constant="12" symbolic="YES" id="0Aa-5u-gfi"/>
                             <constraint firstItem="02D-gK-ig6" firstAttribute="baseline" secondItem="b1v-CW-bpR" secondAttribute="baseline" id="4Jh-OA-eSh"/>
                             <constraint firstAttribute="trailing" secondItem="02D-gK-ig6" secondAttribute="trailing" constant="20" symbolic="YES" id="4XW-Yv-7e8"/>
+                            <constraint firstAttribute="centerX" secondItem="68B-2h-EG8" secondAttribute="centerX" constant="-8" id="9Jm-yj-4Qv"/>
                             <constraint firstItem="b1v-CW-bpR" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" symbolic="YES" id="Awj-s0-cNZ"/>
                             <constraint firstItem="HQZ-Ow-ioG" firstAttribute="centerY" secondItem="AH9-eN-u0i" secondAttribute="centerY" id="WLF-ca-myq"/>
                             <constraint firstAttribute="trailing" secondItem="AH9-eN-u0i" secondAttribute="trailing" constant="20" id="X3k-z0-Cfh"/>
@@ -731,12 +740,14 @@
                             <constraint firstItem="MQ9-Zf-vr7" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="bvb-mO-sVc"/>
                             <constraint firstItem="02D-gK-ig6" firstAttribute="leading" secondItem="AH9-eN-u0i" secondAttribute="leading" id="dEs-mM-w6X"/>
                             <constraint firstItem="b1v-CW-bpR" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="j6j-LM-zdq"/>
+                            <constraint firstAttribute="centerY" secondItem="68B-2h-EG8" secondAttribute="centerY" constant="-35" id="pWh-H2-exw"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="connectionLabel" destination="MQ9-Zf-vr7" id="GvC-4V-AFc"/>
                         <outlet property="disconnectButton" destination="02D-gK-ig6" id="m1y-Mv-pzO"/>
                         <outlet property="discoverConnectButton" destination="b1v-CW-bpR" id="UAg-bm-5LS"/>
+                        <outlet property="localName" destination="68B-2h-EG8" id="DOS-jG-FcD"/>
                         <outlet property="pairedLabel" destination="HQZ-Ow-ioG" id="DDZ-l9-jZD"/>
                         <outlet property="unpairButton" destination="AH9-eN-u0i" id="2ME-Qk-Pdg"/>
                     </connections>

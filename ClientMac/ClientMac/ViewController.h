@@ -11,6 +11,7 @@
 @interface ViewController : NSViewController
 @property (assign) IBOutlet NSTextField *connectionLabel;
 @property (assign) IBOutlet NSTextField *pairedLabel;
+@property (assign) IBOutlet NSTextField *localName;
 @property (assign) IBOutlet NSButton *unpairButton;
 @property (assign) IBOutlet NSButton *disconnectButton;
 @property (assign) IBOutlet NSButton *discoverConnectButton;

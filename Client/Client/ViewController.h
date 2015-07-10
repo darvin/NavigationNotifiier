@@ -14,6 +14,7 @@
 @property (assign) IBOutlet UIButton *unpairButton;
 @property (assign) IBOutlet UIButton *disconnectButton;
 @property (assign) IBOutlet UIButton *discoverConnectButton;
+@property (assign) IBOutlet UILabel *localNameLabel;
 
 -(IBAction)unpairButtonTouched:(id)sender;
 -(IBAction)disconnectButtonTouched:(id)sender;

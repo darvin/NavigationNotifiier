@@ -27,6 +27,11 @@
 
 }
 
+- (NSString *)localName {
+    NSLog(@"Implement in subclass");
+    return nil;
+}
+
 - (void) wasUnpaired {
     [self setPairedRemoteName:nil];
     if ([self.delegate respondsToSelector:@selector(connectionManagerUnpaired:)]) {

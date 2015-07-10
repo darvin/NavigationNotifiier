@@ -21,6 +21,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     _connManager = [[NNPeripheralManager alloc] init];
     _connManager.delegate = self;
+    self.localNameLabel.text = _connManager.localName;
+
     [_connManager connect];
 
     [self updateStatus];

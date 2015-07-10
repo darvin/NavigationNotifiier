@@ -39,19 +39,28 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RF2-rg-4jI">
+                                <rect key="frame" x="265" y="280" width="71" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerX" secondItem="RF2-rg-4jI" secondAttribute="centerX" id="6jt-1X-8yh"/>
                             <constraint firstItem="0kd-9p-u90" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="Gp1-RQ-9ab"/>
                             <constraint firstItem="Dhp-zw-jia" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="12" id="MNr-Wr-8Vi"/>
                             <constraint firstItem="Dhp-zw-jia" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="NWT-QN-n6S"/>
                             <constraint firstItem="wA8-OT-wdQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="QYb-Uo-Wtv"/>
                             <constraint firstItem="wA8-OT-wdQ" firstAttribute="top" secondItem="Dhp-zw-jia" secondAttribute="bottom" constant="8" id="bfj-wY-nPR"/>
                             <constraint firstItem="0kd-9p-u90" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="cWh-6q-jTC"/>
+                            <constraint firstAttribute="centerY" secondItem="RF2-rg-4jI" secondAttribute="centerY" constant="10" id="mQh-Ts-U9u"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="connectionStatusLabel" destination="wA8-OT-wdQ" id="rK6-l8-c9Z"/>
+                        <outlet property="localNameLabel" destination="RF2-rg-4jI" id="LAN-EX-dbP"/>
                         <outlet property="pairedStatusLabel" destination="Dhp-zw-jia" id="SX5-3B-FpV"/>
                         <outlet property="unpairButton" destination="0kd-9p-u90" id="S8d-N9-Zni"/>
                     </connections>

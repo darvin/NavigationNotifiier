@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -56,6 +57,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PfZ-Io-qpj">
+                                <rect key="frame" x="114" y="223" width="71" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -67,7 +74,9 @@
                             <constraint firstItem="ltY-Mr-7D1" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="PHV-hN-ELy"/>
                             <constraint firstItem="zSp-eW-ixq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="R8B-XI-iZw"/>
                             <constraint firstItem="hAe-KJ-x2E" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="4" id="Ug8-07-vXs"/>
+                            <constraint firstAttribute="centerY" secondItem="PfZ-Io-qpj" secondAttribute="centerY" constant="66.5" id="WXG-Rq-GmU"/>
                             <constraint firstItem="zSp-eW-ixq" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="gYd-VZ-we0"/>
+                            <constraint firstAttribute="centerX" secondItem="PfZ-Io-qpj" secondAttribute="centerX" constant="150.5" id="lPN-4g-Kd8"/>
                             <constraint firstItem="fD4-U0-ywb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="swQ-Yi-ixh"/>
                         </constraints>
                     </view>
@@ -75,6 +84,7 @@
                         <outlet property="connectionLabel" destination="hAe-KJ-x2E" id="s5Y-yl-cai"/>
                         <outlet property="disconnectButton" destination="zSp-eW-ixq" id="Jj9-re-bDK"/>
                         <outlet property="discoverConnectButton" destination="ltY-Mr-7D1" id="Ark-lW-Cxd"/>
+                        <outlet property="localNameLabel" destination="PfZ-Io-qpj" id="7YT-Yk-m1y"/>
                         <outlet property="pairedLabel" destination="fD4-U0-ywb" id="QMz-7Q-w3Y"/>
                         <outlet property="unpairButton" destination="Nk4-C7-hii" id="Jiv-Gv-B3V"/>
                     </connections>
