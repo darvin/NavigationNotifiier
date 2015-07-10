@@ -9,7 +9,7 @@
 #import "NNCentralManager.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <UIKit/UIDevice.h>
-#import "../../Shared/BLEIDs.h"
+#import "BLEIDs.h"
 
 NS_ENUM(NSInteger, NNCentralManagerState) {
     NNCentralManagerStateIdle,

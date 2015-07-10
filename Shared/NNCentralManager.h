@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "../../Shared/NNConnectionManager.h"
+#import "NNConnectionManager.h"
 
 @interface NNCentralManager : NNConnectionManager
 - (void)disconnect;

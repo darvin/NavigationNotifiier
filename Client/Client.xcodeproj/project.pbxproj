@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		573865AE1B4F6C0000AC2FBF /* NNCentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865AD1B4F6C0000AC2FBF /* NNCentralManager.m */; };
 		573865BC1B4F73A000AC2FBF /* NNConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865BB1B4F73A000AC2FBF /* NNConnectionManager.m */; };
+		573865C21B4FC8F100AC2FBF /* NNCentralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573865C11B4FC8F100AC2FBF /* NNCentralManager.m */; };
 		57B80AA71B4F437100546F48 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AA61B4F437100546F48 /* main.m */; };
 		57B80AAA1B4F437100546F48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AA91B4F437100546F48 /* AppDelegate.m */; };
 		57B80AAD1B4F437100546F48 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B80AAC1B4F437100546F48 /* ViewController.m */; };
@@ -29,11 +29,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		573865AC1B4F6C0000AC2FBF /* NNCentralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNCentralManager.h; sourceTree = "<group>"; };
-		573865AD1B4F6C0000AC2FBF /* NNCentralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNCentralManager.m; sourceTree = "<group>"; };
 		573865B91B4F73A000AC2FBF /* BLEIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEIDs.h; sourceTree = "<group>"; };
 		573865BA1B4F73A000AC2FBF /* NNConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNConnectionManager.h; sourceTree = "<group>"; };
 		573865BB1B4F73A000AC2FBF /* NNConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNConnectionManager.m; sourceTree = "<group>"; };
+		573865C01B4FC8F100AC2FBF /* NNCentralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNCentralManager.h; sourceTree = "<group>"; };
+		573865C11B4FC8F100AC2FBF /* NNCentralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNCentralManager.m; sourceTree = "<group>"; };
 		57B80AA11B4F437100546F48 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57B80AA51B4F437100546F48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57B80AA61B4F437100546F48 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -73,6 +73,8 @@
 				573865B91B4F73A000AC2FBF /* BLEIDs.h */,
 				573865BA1B4F73A000AC2FBF /* NNConnectionManager.h */,
 				573865BB1B4F73A000AC2FBF /* NNConnectionManager.m */,
+				573865C01B4FC8F100AC2FBF /* NNCentralManager.h */,
+				573865C11B4FC8F100AC2FBF /* NNCentralManager.m */,
 			);
 			name = Shared;
 			path = ../Shared;
@@ -108,8 +110,6 @@
 				57B80AB11B4F437100546F48 /* Images.xcassets */,
 				57B80AB31B4F437100546F48 /* LaunchScreen.xib */,
 				57B80AA41B4F437100546F48 /* Supporting Files */,
-				573865AC1B4F6C0000AC2FBF /* NNCentralManager.h */,
-				573865AD1B4F6C0000AC2FBF /* NNCentralManager.m */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -241,10 +241,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				57B80AAD1B4F437100546F48 /* ViewController.m in Sources */,
-				573865AE1B4F6C0000AC2FBF /* NNCentralManager.m in Sources */,
 				573865BC1B4F73A000AC2FBF /* NNConnectionManager.m in Sources */,
 				57B80AAA1B4F437100546F48 /* AppDelegate.m in Sources */,
 				57B80AA71B4F437100546F48 /* main.m in Sources */,
+				573865C21B4FC8F100AC2FBF /* NNCentralManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
