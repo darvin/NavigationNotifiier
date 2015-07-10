@@ -14,7 +14,8 @@
 NS_ENUM(NSInteger, NNCentralManagerState) {
     NNCentralManagerStateIdle,
     NNCentralManagerStateDiscovery,
-    NNCentralManagerStateConnection
+    NNCentralManagerStateConnection,
+    NNCentralManagerStateDisconnecting
 };
 
 @interface NNCentralManager ()  <CBCentralManagerDelegate, CBPeripheralDelegate>;
@@ -59,17 +60,37 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
 }
 
 - (void)disconnect {
-    _state = NNCentralManagerStateIdle;
-    _connectedPeripheral.delegate = nil;
-    [_manager cancelPeripheralConnection:_connectedPeripheral];
-    _manager.delegate = nil;
-    _manager = nil;
-    [self wasDisconnected];
-    
+    if (_connectedPeripheral!=nil) {
+
+        _state = NNCentralManagerStateDisconnecting;
+        CBCharacteristic *pairedClientCharacteristic = [self pairedClientNameCharacteristicForPeripheral:_connectedPeripheral];
+        [_connectedPeripheral setNotifyValue:NO forCharacteristic:pairedClientCharacteristic];
+    } else {
+        _state = NNCentralManagerStateIdle;
+
+    }
 }
 - (void) unpair {
+    if (_connectedPeripheral!=nil) {
+        CBCharacteristic *pairedClientCharacteristic = [self pairedClientNameCharacteristicForPeripheral:_connectedPeripheral];
+        [_connectedPeripheral writeValue:[IND_NN_PAIRED_CLIENT_NAME_EMPTY_DATA dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:pairedClientCharacteristic type:CBCharacteristicWriteWithResponse];
+    }
+
     [self disconnect];
     [self wasUnpaired];
+}
+
+- (CBCharacteristic *)pairedClientNameCharacteristicForPeripheral:(CBPeripheral *)peripheral {
+    for (CBService *service in peripheral.services) {
+        if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
+            for (CBCharacteristic *characteristic in service.characteristics) {
+                if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
+                    return characteristic;
+                }
+            }
+        }
+    }
+    return nil;
 }
 
 - (void)estabilishConnectionWithEligiblePeripheral:(CBPeripheral *) peripheral {
@@ -81,18 +102,13 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
             [_manager cancelPeripheralConnection:eachPeripheral];
         }
         [_peripheralsForDiscovery removeObject:eachPeripheral];
-
+        
     }
     _connectedPeripheral = peripheral;
-    for (CBService *service in _connectedPeripheral.services) {
-        if ([service.UUID isEqual:IND_NN_SERVICE_UUID]) {
-            for (CBCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.UUID isEqual:IND_NN_PAIRED_CLIENT_NAME_CHAR_UUID]) {
-                    [peripheral writeValue:[[self localName] dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
-                }
-            }
-        }
-    }
+    CBCharacteristic *pairedClientCharacteristic = [self pairedClientNameCharacteristicForPeripheral:_connectedPeripheral];
+    [peripheral writeValue:[[self localName] dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:pairedClientCharacteristic type:CBCharacteristicWriteWithResponse];
+    [peripheral setNotifyValue:YES forCharacteristic:pairedClientCharacteristic];
+
     NSString *serverName = _serverNamesForDiscovery[peripheral];
     [self setPairedRemoteName:serverName];
     [self wasConnectedToRemote:serverName];
@@ -241,7 +257,17 @@ NS_ENUM(NSInteger, NNCentralManagerState) {
     
 }
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    
+    if (_state==NNCentralManagerStateDisconnecting) {
+        _state = NNCentralManagerStateIdle;
+        _connectedPeripheral.delegate = nil;
+        [_manager cancelPeripheralConnection:_connectedPeripheral];
+        _connectedPeripheral = nil;
+
+        _manager.delegate = nil;
+        _manager = nil;
+        [self wasDisconnected];
+
+    }
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     
