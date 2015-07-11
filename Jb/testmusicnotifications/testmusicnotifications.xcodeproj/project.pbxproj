@@ -15,6 +15,7 @@
 		573FEAA81B50932B00ED8042 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 573FEAA61B50932B00ED8042 /* LaunchScreen.xib */; };
 		573FEAB41B50932B00ED8042 /* testmusicnotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 573FEAB31B50932B00ED8042 /* testmusicnotificationsTests.m */; };
 		573FEABE1B50A3E600ED8042 /* 5min.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573FEABD1B50A3E600ED8042 /* 5min.mp3 */; };
+		573FEAC01B50B77600ED8042 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573FEABF1B50B77600ED8042 /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		573FEAB21B50932B00ED8042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		573FEAB31B50932B00ED8042 /* testmusicnotificationsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testmusicnotificationsTests.m; sourceTree = "<group>"; };
 		573FEABD1B50A3E600ED8042 /* 5min.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 5min.mp3; sourceTree = "<group>"; };
+		573FEABF1B50B77600ED8042 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				573FEAC01B50B77600ED8042 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +68,7 @@
 		573FEA8B1B50932B00ED8042 = {
 			isa = PBXGroup;
 			children = (
+				573FEABF1B50B77600ED8042 /* MediaPlayer.framework */,
 				573FEABD1B50A3E600ED8042 /* 5min.mp3 */,
 				573FEA961B50932B00ED8042 /* testmusicnotifications */,
 				573FEAB01B50932B00ED8042 /* testmusicnotificationsTests */,

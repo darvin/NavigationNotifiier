@@ -1,0 +1,10 @@
+Package: com.darvin.navnotifynowplaying
+Name: NavNotifyNowPlaying
+Depends: mobilesubstrate
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Sergey Klimov
+Author: Sergey Klimov
+Section: Tweaks
+Version: 0.0.1-12+debug
+Installed-Size: 72
