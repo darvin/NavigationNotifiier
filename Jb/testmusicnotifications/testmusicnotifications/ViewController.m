@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 @import MediaPlayer;
+@import AVFoundation;
 
 @interface ViewController ()
 
@@ -17,15 +18,85 @@
     NSTimer *_timer;
     NSDictionary *_currentAlbum;
     NSUInteger _currentSongIndex;
+    UIImage *_currentArtwork;
+    AVPlayer *_player;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
+    // Set ourselves as the first responder
+    
+    [self becomeFirstResponder];
+    
+    // Set the audio session
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *setCategoryError = nil;
+    BOOL success = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
+    NSError *activationError = nil;
+    success = [audioSession setActive:YES error:&activationError];
+    
+    // Play an mp3 with AVAudioPlayer
+    
+    NSString *audioFileName = @"%@/5min.mp3";
+    NSURL *audioURL = [NSURL fileURLWithPath:[NSString stringWithFormat:audioFileName, [[NSBundle mainBundle] resourcePath]]];
+    _player = [[AVPlayer alloc] initWithURL:audioURL];
+    
+    [_player play];
+
+    
+    
+    
     _timer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self
                                             selector:@selector(fireNotification)
                                             userInfo:nil repeats:NO];
     [self fireNotification];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    // Turn off remote control event delivery & Resign as first responder
+    
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+    
+    // Don't forget to call super
+    
+    [super viewWillDisappear:animated];
+}
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)receivedEvent {
+    
+    if (receivedEvent.type == UIEventTypeRemoteControl) {
+        
+        switch (receivedEvent.subtype) {
+                
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                NSLog(@"prev");
+                break;
+                
+            case UIEventSubtypeRemoteControlNextTrack:
+                NSLog(@"next");
+                [self fireNotification];
+                break;
+                
+            case UIEventSubtypeRemoteControlPlay:
+                [_player play];
+                break;
+                
+            case UIEventSubtypeRemoteControlPause:
+                [_player pause];
+                break;
+                
+            default:
+                break;
+        }
+    }
 }
 
 - (void)fireNotification {
@@ -46,13 +117,14 @@
     self.albumLabel.text = currentAlbumName;
     self.artistLabel.text = _currentAlbum[@"artist"];
     self.durationLabel.text =  [[NSString alloc] initWithFormat:@"%02ld:%02ld", (long)currentSongDuration / 60, (long)currentSongDuration % 60];
+    self.artworkImage.image = _currentArtwork;
     
     ic.nowPlayingInfo = @{
                           MPMediaItemPropertyAlbumTitle:currentAlbumName,
                           MPMediaItemPropertyAlbumTrackCount:@([[_currentAlbum objectForKey:@"tracks"] count]),
                           MPMediaItemPropertyAlbumTrackNumber:@(_currentSongIndex),
                           MPMediaItemPropertyArtist:_currentAlbum[@"artist"],
-//                          MPMediaItemPropertyArtwork
+                          MPMediaItemPropertyArtwork:[[MPMediaItemArtwork alloc] initWithImage:_currentArtwork],
 //                          MPMediaItemPropertyComposer
 //                          MPMediaItemPropertyDiscCount
 //                          MPMediaItemPropertyDiscNumber
@@ -74,6 +146,11 @@
     albumString = [[albumString stringByReplacingOccurrencesOfString:@"jsonMetallizerAlbum(" withString:@""] stringByReplacingOccurrencesOfString:@");" withString:@""];
     NSError *err;
     _currentAlbum = [NSJSONSerialization JSONObjectWithData:[albumString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&err];
+    
+    
+    NSData *artworkData = [self getDataFrom:@"http://thecatapi.com/api/images/get?format=src&type=png"];
+    _currentArtwork = [UIImage imageWithData:artworkData scale:1.0];
+    
 }
 - (NSData *) getDataFrom:(NSString *)url{
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];

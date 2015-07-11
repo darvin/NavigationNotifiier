@@ -14,6 +14,7 @@
 		573FEAA51B50932B00ED8042 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 573FEAA41B50932B00ED8042 /* Images.xcassets */; };
 		573FEAA81B50932B00ED8042 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 573FEAA61B50932B00ED8042 /* LaunchScreen.xib */; };
 		573FEAB41B50932B00ED8042 /* testmusicnotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 573FEAB31B50932B00ED8042 /* testmusicnotificationsTests.m */; };
+		573FEABE1B50A3E600ED8042 /* 5min.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 573FEABD1B50A3E600ED8042 /* 5min.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		573FEAAD1B50932B00ED8042 /* testmusicnotificationsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = testmusicnotificationsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		573FEAB21B50932B00ED8042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		573FEAB31B50932B00ED8042 /* testmusicnotificationsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testmusicnotificationsTests.m; sourceTree = "<group>"; };
+		573FEABD1B50A3E600ED8042 /* 5min.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 5min.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 		573FEA8B1B50932B00ED8042 = {
 			isa = PBXGroup;
 			children = (
+				573FEABD1B50A3E600ED8042 /* 5min.mp3 */,
 				573FEA961B50932B00ED8042 /* testmusicnotifications */,
 				573FEAB01B50932B00ED8042 /* testmusicnotificationsTests */,
 				573FEA951B50932B00ED8042 /* Products */,
@@ -202,6 +205,7 @@
 				573FEAA31B50932B00ED8042 /* Main.storyboard in Resources */,
 				573FEAA81B50932B00ED8042 /* LaunchScreen.xib in Resources */,
 				573FEAA51B50932B00ED8042 /* Images.xcassets in Resources */,
+				573FEABE1B50A3E600ED8042 /* 5min.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

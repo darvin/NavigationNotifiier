@@ -13,6 +13,7 @@
 @property (assign) IBOutlet UILabel *artistLabel;
 @property (assign) IBOutlet UILabel *albumLabel;
 @property (assign) IBOutlet UILabel *durationLabel;
+@property (assign) IBOutlet UIImageView *artworkImage;
 - (IBAction)nextSongTouched:(id)sender;
 @end
 

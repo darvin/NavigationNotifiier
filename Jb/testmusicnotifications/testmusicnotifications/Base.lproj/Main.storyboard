@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -35,6 +36,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="duration" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4U-te-cX0">
+                                <rect key="frame" x="16" y="107" width="64" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kab-H3-76f">
                                 <rect key="frame" x="16" y="449" width="568" height="131"/>
                                 <color key="backgroundColor" red="0.61706637833938272" green="1" blue="0.33475682908105331" alpha="1" colorSpace="calibratedRGB"/>
@@ -48,21 +55,24 @@
                                     <action selector="nextSongTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="y6K-QX-HDO"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="duration" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4U-te-cX0">
-                                <rect key="frame" x="16" y="107" width="64" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7OC-La-5DH">
+                                <rect key="frame" x="157" y="150" width="286" height="286"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="7OC-La-5DH" secondAttribute="height" multiplier="127:143" constant="32" id="6dv-lM-aRe"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Kab-H3-76f" firstAttribute="top" secondItem="7OC-La-5DH" secondAttribute="bottom" constant="13" id="1sk-dk-YO2"/>
+                            <constraint firstItem="7OC-La-5DH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="130" id="2U3-Vx-cmN"/>
                             <constraint firstItem="qLv-IZ-Ll7" firstAttribute="leading" secondItem="kCG-He-5aB" secondAttribute="leading" id="Bm9-Gi-Sov"/>
                             <constraint firstItem="G70-iw-70p" firstAttribute="leading" secondItem="kCG-He-5aB" secondAttribute="leading" id="Bya-s1-WVh"/>
                             <constraint firstItem="Kab-H3-76f" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="CJs-tv-gcY"/>
                             <constraint firstItem="kCG-He-5aB" firstAttribute="top" secondItem="G70-iw-70p" secondAttribute="bottom" constant="8" symbolic="YES" id="Jbm-3D-3Mz"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Kab-H3-76f" secondAttribute="bottom" constant="20" id="Lej-dQ-bWo"/>
                             <constraint firstItem="K4U-te-cX0" firstAttribute="top" secondItem="qLv-IZ-Ll7" secondAttribute="bottom" constant="8" symbolic="YES" id="LuM-Fj-yNh"/>
+                            <constraint firstAttribute="centerX" secondItem="7OC-La-5DH" secondAttribute="centerX" id="N5v-rj-m0b"/>
                             <constraint firstItem="G70-iw-70p" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Wp9-QJ-V7U"/>
                             <constraint firstItem="K4U-te-cX0" firstAttribute="leading" secondItem="qLv-IZ-Ll7" secondAttribute="leading" id="Y9k-8a-TRc"/>
                             <constraint firstItem="qLv-IZ-Ll7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="kRu-my-6Zc"/>
@@ -74,6 +84,7 @@
                     <connections>
                         <outlet property="albumLabel" destination="kCG-He-5aB" id="rUn-Zs-TY4"/>
                         <outlet property="artistLabel" destination="G70-iw-70p" id="SVY-RU-iQa"/>
+                        <outlet property="artworkImage" destination="7OC-La-5DH" id="CY0-hm-mYy"/>
                         <outlet property="durationLabel" destination="K4U-te-cX0" id="gGs-eW-abd"/>
                         <outlet property="songLabel" destination="qLv-IZ-Ll7" id="ryP-W2-AHc"/>
                     </connections>
