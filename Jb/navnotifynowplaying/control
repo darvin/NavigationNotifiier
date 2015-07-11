@@ -1,6 +1,6 @@
 Package: com.darvin.navnotifynowplaying
 Name: NavNotifyNowPlaying
-Depends: mobilesubstrate
+Depends: mobilesubstrate, cc.tweak.libobjcipc
 Version: 0.0.1
 Architecture: iphoneos-arm
 Description: An awesome MobileSubstrate tweak!

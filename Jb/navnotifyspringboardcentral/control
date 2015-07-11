@@ -1,10 +1,9 @@
-Package: com.darvin.navnotifynowplaying
-Name: NavNotifyNowPlaying
+Package: com.darvin.navnotifyspringboardcentral
+Name: NavNotifySpringBoardCentral
 Depends: mobilesubstrate, cc.tweak.libobjcipc
+Version: 0.0.1
 Architecture: iphoneos-arm
 Description: An awesome MobileSubstrate tweak!
 Maintainer: Sergey Klimov
 Author: Sergey Klimov
 Section: Tweaks
-Version: 0.0.1-20
-Installed-Size: 16

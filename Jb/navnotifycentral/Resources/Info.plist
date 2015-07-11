@@ -1,0 +1,21 @@
+{
+    CFBundleExecutable = "NavNotifyCentral";
+    CFBundleIconFile = icon.png;
+    CFBundleIdentifier = "com.darvin.navnotifycentral";
+    CFBundleInfoDictionaryVersion = 6.0;
+    CFBundlePackageType = APPL;
+    CFBundleSignature = "????";
+    CFBundleSupportedPlatforms = (
+	iPhoneOS
+    );
+    CFBundleVersion = 1.0;
+    DTPlatformName = iphoneos;
+    DTSDKName = iphoneos3.0;
+    LSRequiresIPhoneOS = 1;
+    MinimumOSVersion = 3.0;
+    UIBackgroundModes = (
+        "external-accessory";
+        "bluetooth-peripheral"
+    );  
+    UIApplicationExitsOnSuspend = NO;
+}
