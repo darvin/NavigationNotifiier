@@ -26,3 +26,6 @@ DerivedData
 #Pods/
 
 .DS_Store
+.theos/
+*.deb
+obj/

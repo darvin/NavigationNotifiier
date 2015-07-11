@@ -14,8 +14,9 @@
     LSRequiresIPhoneOS = 1;
     MinimumOSVersion = 3.0;
     UIBackgroundModes = (
-        "external-accessory";
-        "bluetooth-peripheral"
+        bluetooth-peripheral,
+        continuous,
+        unboundedTaskCompletion
     );  
     UIApplicationExitsOnSuspend = NO;
 }

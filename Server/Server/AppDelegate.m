@@ -12,13 +12,25 @@
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    NSTimer *_timer;
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self
+                                            selector:@selector(loggingTimer)
+                                            userInfo:nil repeats:YES];
+
     return YES;
 }
+
+- (void)loggingTimer {
+    NSLog(@"NavNotifyCentral is up and running...");
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
